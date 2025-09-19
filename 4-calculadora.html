@@ -176,12 +176,23 @@
       )
     }
 
-    function NotEndsWithNumber(str) {
-      return (str) => {
-        // Regex: verifica se o último caractere (o $ indica o fim da string)
-        // não é um dígito (\D).
-        return !/\D$/.test(str);
+    function replaceCharAtIndex(originalString, index, newChar) {
+      if (index < 0 || index >= originalString.length) {
+        return originalString; // Handle out-of-bounds index
       }
+      return (
+        originalString.substring(0, index) +
+        newChar +
+        originalString.substring(index + 1)
+      );
+    }
+
+    // Example usage in a React component:
+    function MyComponent() {
+      const originalText = "Hello World";
+      newText = replaceCharAtIndex(originalText, 6, "J"); // Replaces 'W' with 'J'
+
+      return <div>{newText}</div>; // Output: "Hello Jorld"
     }
 
     function useCalculator() {
@@ -215,22 +226,31 @@
           input = "";
         }
 
-        if (isNaN(input) && ((operation.endsWith('+')) || (operation.endsWith('-')) || (operation.endsWith('/')) || (operation.endsWith('*')))) {
-          input = "";
-        }
-
         if (result) {
           setOperation(isNaN(input) ? `${result}${input}` : input)
           setResult('');
           return;
         }
 
+        `${result}${input === ',' ? "" : " "}${input}`
+
         if (input === ',' && !operation.endsWith(',')) {
           setOperation(`${operation},`);
           return;
         }
 
-        setOperation(`${operation}${input}`)
+        if (isNaN(input) && ((operation.endsWith('+')) || (operation.endsWith('-')) || (operation.endsWith('/')) || (operation.endsWith('*')))) {
+          console.log((operation.charAt(operation.length - 1) === input));
+          if (operation.charAt(operation.length - 1) === input) {
+            input = "";
+          } else {
+            var newOperation = replaceCharAtIndex(operation, operation.length - 1, input);
+            setOperation(`${newOperation}`);
+          }
+        } else {
+          setOperation(`${operation}${input}`)
+        }
+
       }
 
       return {
