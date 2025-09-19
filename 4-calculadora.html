@@ -240,16 +240,16 @@
         }
 
         if (isNaN(input) && ((operation.endsWith('+')) || (operation.endsWith('-')) || (operation.endsWith('/')) || (operation.endsWith('*')))) {
-          console.log((operation.charAt(operation.length - 1) === input));
           if (operation.charAt(operation.length - 1) === input) {
             input = "";
           } else {
             var newOperation = replaceCharAtIndex(operation, operation.length - 1, input);
             setOperation(`${newOperation}`);
+            return;
           }
-        } else {
-          setOperation(`${operation}${input}`)
         }
+        setOperation(`${operation}${input}`)
+
 
       }
 
