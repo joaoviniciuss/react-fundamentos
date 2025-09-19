@@ -176,6 +176,14 @@
       )
     }
 
+    function NotEndsWithNumber(str) {
+      return (str) => {
+        // Regex: verifica se o último caractere (o $ indica o fim da string)
+        // não é um dígito (\D).
+        return !/\D$/.test(str);
+      }
+    }
+
     function useCalculator() {
       const [operation, setOperation] = React.useState('');
       const [result, setResult] = React.useState('')
@@ -201,6 +209,14 @@
           updateHistory(operation, parsedResult)
 
           return;
+        }
+
+        if (isNaN(input) && !operation) {
+          input = "";
+        }
+
+        if (isNaN(input) && ((operation.endsWith('+')) || (operation.endsWith('-')) || (operation.endsWith('/')) || (operation.endsWith('*')))) {
+          input = "";
         }
 
         if (result) {
